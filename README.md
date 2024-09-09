@@ -25,3 +25,4 @@ python convert.py --input-folder <input-folder>
 - `--width` - The width of the output video. Default is 1080.
 - `--height` - The height of the output video. Default is 1920.
 - `--bitrate` - The bitrate of the output video. Default is pulled from the input video.
+- `--delete-old` - Delete the old mp4 files after converting them to webm format. Default is True.

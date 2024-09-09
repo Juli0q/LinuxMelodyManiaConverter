@@ -29,6 +29,8 @@ parser.add_argument("--width", type=int, help="Width of the output video", defau
 parser.add_argument("--height", type=int, help="Height of the output video", default=1080)
 parser.add_argument("--bitrate", metavar="output", type=int,
                     help="Output video bitrate, uses the input videos default", default="-1")
+parser.add_argument("--delete-old", action="store_true", help="Delete the old video file after conversion",
+                    default=True)
 
 # Parse the arguments
 args = parser.parse_args()
@@ -87,6 +89,14 @@ def replace_video_line(song_name, root):
         file.writelines(lines)
 
 
+def delete_old_video(file_path):
+    # Do a safety check to make sure the file is a video file
+    if file_path.endswith(".mp4"):
+        os.remove(file_path)
+    else:
+        logging.error(f"File {file_path} is not a video file, not deleting it")
+
+
 logging.info(f"Starting conversion of videos in {args.input_folder}")
 start_time = time.time()
 
@@ -111,6 +121,9 @@ for root, dirs, files in os.walk(args.input_folder):
 
             # Replace the video line in the .txt file
             replace_video_line(song_name, root)
+
+            # Delete the old video file if the delete-old flag is set
+            delete_old_video(file_path)
 
 # Get the end time
 end_time = time.time()
